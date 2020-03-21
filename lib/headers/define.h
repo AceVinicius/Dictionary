@@ -89,8 +89,11 @@ typedef struct tree_rb_s tree_rb_t;
 const char k_fatal_error[ ] = {
     "\033[31;1mfatal error:\033[0;0m"
 };
+const char k_program[ ] = {
+    " Dictionary "
+};
 const char k_creator[ ] = {
-    " Claudio "
+    " Vinícius F. Aguiar "
 };
 const char *k_menu[ ] = {
     "Search",
