@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "curses.h": "c",
-        "print.h": "c",
-        "tree.h": "c"
-    }
-}
