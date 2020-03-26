@@ -93,7 +93,7 @@ const char k_program[ ] = {
     " Dictionary "
 };
 const char k_creator[ ] = {
-    " Vinícius F. Aguiar "
+    " Vinicius F. Aguiar "
 };
 const char *k_menu[ ] = {
     "Search",
