@@ -113,7 +113,7 @@ menu_screen( void )
 char *
 tree_operations_screen( const char *string, const unsigned long long size )
 {
-    char key[ MAX_WORD ];
+    static char key[ MAX_WORD ];
     WINDOW *content = create_basic_layout( k_height_min, k_width_min );
 
     mvwprintw( content, 2, (k_width_min - size) / 2, string );
@@ -137,7 +137,7 @@ tree_operations_screen( const char *string, const unsigned long long size )
 char *
 print_node_screen( const char *string, const unsigned long long size )
 {
-    char key[ MAX_WORD ];
+    static char key[ MAX_WORD ];
     WINDOW *content = create_basic_layout( k_height_min, k_width_min );
 
     mvwprintw( content, 2, (k_width_min - size) / 2, string );
