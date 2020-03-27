@@ -6,8 +6,10 @@
 #include <ncurses.h>
 
 #include "../lib/headers/define.h"
+#include "../lib/headers/constants.h"
+#include "../lib/headers/tree.h"
 // #include "../lib/headers/print.h"
-// #include "../lib/headers/tree.h"
+#include "../lib/headers/main.h"
 
 
 
@@ -42,7 +44,7 @@ create_basic_layout( const int min_y, const int min_x )
     box( content, 0, 0 );
     wattron( content, COLOR_PAIR(4) );
     mvwprintw( content, 0, (width - k_program_size) / 2, k_program );
-    mvwprintw( content, height - 1, width - k_creator_size - 4, k_creator );
+    mvwprintw( content, height - 1, width - k_creator_size - 2, k_creator );
     wattroff( content, COLOR_PAIR(4) );
 
     refresh( );
@@ -332,7 +334,7 @@ initial_tree_setup( void )
 
     scanf( " %s", word );
 
-    while ( strcmp( word, "0"))
+    while (strcmp( word, "0"))
     {
         scanf( " %s", word );
         parse( word );
@@ -353,15 +355,17 @@ main( void )
 {
     if (start_terminal( )) return EXIT_FAILURE;
 
-    int   choice;
-    tree_rb_t *tree = NULL;
-    bool  status = RUNNING;
+
+    tree_rb_t *tree = initialize_tree( );
+
+    bool status = RUNNING;
+
 
     // initial_setup_tree( tree );
 
     do
     {
-        choice = menu_screen( );
+        int choice = menu_screen( );
 
         switch (choice)
         {

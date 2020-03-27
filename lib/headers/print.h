@@ -1,3 +1,17 @@
+/**
+ *  @file   main.h
+ *  @author Vinícius Ferreira Aguiar
+ *  @date   09.03.2020
+ *  @brief  Contain all the definitions of the program.
+ *
+ *  Functions in this file:
+ *    @see print_trunks()
+ *    @see print_tree()
+ *    @see Tree_Print()
+ *
+ *  @see https://github.com/AceVinicius
+ *
+ */
 #ifndef _PRINT_H_
 # define _PRINT_H_
 

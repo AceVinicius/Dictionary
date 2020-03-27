@@ -4,24 +4,6 @@
  *  @date   09.03.2020
  *  @brief  Contain all the definitions of the program.
  *
- *  Functions in this file:
- *    @see create_basic_layout()
- *    @see menu_screen()
- *    @see tree_operations_screen()
- *    @see node_screen()
- *    @see node_screen()
- *    @see tree_screen()
- *    @see exit_screen()
- *    @see parse()
- *    @see search()
- *    @see insert()
- *    @see delete()
- *    @see print_node()
- *    @see print_tree()
- *    @see exit_loop()
- *    @see start_terminal()
- *    @see initial_tree_setup()
- *
  *  @see https://github.com/AceVinicius
  *
  */
@@ -30,9 +12,6 @@
 
 
 
-/*
- *  FLAGS
- */
 // # define MAKE_BACKUP
 
 # define ERROR    true
@@ -66,13 +45,13 @@ struct node_rb_s
 
 struct tree_rb_s
 {
-	struct node_rb_s *root;
+    struct node_rb_s *root;
 
     int size;
-
 };
-//
-//
+
+
+
 /*
  *  Typedefs
  */
@@ -81,55 +60,6 @@ typedef struct tree_rb_s tree_rb_t;
 // typedef;
 // typedef;
 
-
-
-/*
- *  Constants
- */
-const char k_fatal_error[ ] = {
-    "\033[31;1mfatal error:\033[0;0m"
-};
-const char k_program[ ] = {
-    " Dictionary "
-};
-const char k_creator[ ] = {
-    " Vinicius F. Aguiar "
-};
-const char *k_menu[ ] = {
-    "Search",
-    "Insert",
-    "Delete",
-    "Print Node",
-    "Print Tree",
-    "Exit"
-};
-const int k_creator_size = sizeof( k_creator ) / sizeof( char );
-const int k_program_size = sizeof( k_program ) / sizeof( char );
-const int k_menu_size    = sizeof( k_menu ) / sizeof( char * );
-const int k_height_min   = k_menu_size + 4;
-const int k_width_min    = 40;
-
-
-
-/*
- *  Functions
- */
-WINDOW *create_basic_layout( const int min_y, const int min_x );
-int menu_screen( void );
-char *tree_operations_screen( const char *string, const unsigned long long size );
-char *print_node_screen( const char *string, const unsigned long long size );
-// void node_screen( const char *string, const char size );
-// void tree_screen( const char *string, const char size );
-void exit_screen( void );
-void parse( char *string );
-void search( tree_rb_t *tree );
-void insert( tree_rb_t *tree );
-void delete( tree_rb_t *tree );
-void print_node( tree_rb_t *tree );
-void print_tree( tree_rb_t *tree );
-void exit_loop( bool *status );
-bool start_terminal( void );
-// void initial_tree_setup( void );
 
 
 #endif  // _DEFINE_H_

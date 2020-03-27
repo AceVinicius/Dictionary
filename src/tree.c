@@ -11,6 +11,11 @@ initialize_tree( void )
 {
     tree_rb_t *new_tree = (tree_rb_t *) malloc( sizeof(tree_rb_t *) );
 
+    if (new_tree == NULL)
+    {
+        return NULL;
+    }
+
     new_tree->root = NULL;
     new_tree->size = 0;
 
@@ -19,8 +24,8 @@ initialize_tree( void )
 
 
 
-node_rb_t *
-insert_rb()
-{
-
-}
+// node_rb_t *
+// insert_rb()
+// {
+//
+// }
