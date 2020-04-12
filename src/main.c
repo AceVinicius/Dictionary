@@ -135,7 +135,7 @@ tree_operations_screen( const char *string, const unsigned long long size )
     wrefresh( content );
 
     wattron( content, COLOR_PAIR(6) );
-    mvwscanw( content, 6, 4, " %s", key);
+    mvwscanw( content, 6, 4, " %s", key );
     wattroff( content, COLOR_PAIR(6) );
 
     return key;

@@ -147,8 +147,6 @@ __insert_rb(                node_rb_t *root ,
     }
 
     return __insert_fix_up( root, new_node );
-
-
 }
 
 
@@ -159,7 +157,6 @@ __insert_fix_up( node_rb_t *root      ,
 {
     while (last_node != root && last_node->parent->color_e == RED)
     {
-
         node_rb_t *grandfather = last_node->parent->parent;
         node_rb_t *father      = last_node->parent;
         node_rb_t *uncle;
@@ -167,67 +164,54 @@ __insert_fix_up( node_rb_t *root      ,
         if (father == grandfather->left)
         {
             uncle = grandfather->right;
-
-            /* If x's parent is a left, y is x's right 'uncle' */
-            /* case 1 - change the colours */
+            /* case 1 */
             if (uncle != NULL && uncle->color_e == RED)
             {
                 grandfather->color_e = RED;
                 father->color_e      = BLACK;
                 uncle->color_e       = BLACK;
-                /* Move x up the tree */
                 last_node = grandfather;
             }
-            /* y is a black node */
             else
             {
-                /* case 2 - move x up and rotate */
-                /* and x is to the right */
+                /* case 2 */
                 if (last_node == father->right)
                 {
                     last_node   = father;
                     father      = grandfather;
                     grandfather = grandfather->parent;
-
                     __left_rotate( &root, last_node );
                 }
                 /* case 3 */
                 grandfather->color_e = RED;
                 father->color_e      = BLACK;
-
                 __right_rotate( &root, grandfather );
             }
         }
         else
         {
             uncle = grandfather->left;
-
-            /* case 1 - change the colours */
+            /* case 1 */
             if (uncle != NULL && uncle->color_e == RED)
             {
                 grandfather->color_e = RED;
                 father->color_e      = BLACK;
                 uncle->color_e       = BLACK;
-                /* Move x up the tree */
                 last_node = grandfather;
             }
-            /* y is a black node */
             else
             {
-                /* case 2 - move x up and rotate */
-                /* and x is to the right */
+                /* case 2 */
                 if (last_node == father->left)
                 {
                     last_node   = father;
                     father      = grandfather;
                     grandfather = grandfather->parent;
-
                     __right_rotate( &root, last_node );
                 }
                 /* case 3 */
                 grandfather->color_e = RED;
                 father->color_e      = BLACK;
-
                 __left_rotate( &root, grandfather );
             }
         }
