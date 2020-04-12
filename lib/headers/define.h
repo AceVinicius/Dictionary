@@ -13,6 +13,7 @@
 
 
 // # define MAKE_BACKUP
+// # define NCURSES
 
 # define ERROR    true
 # define ALL_SET false
@@ -29,16 +30,17 @@
 
 
 
-/**
+/*
  *  Structs
  */
 struct node_rb_s
 {
 	struct node_rb_s *left;
 	struct node_rb_s *right;
+    struct node_rb_s *parent;
 
-	// void *data;
-	int key;
+	void *data;
+	char  key;
 
 	enum { RED, BLACK } color_e;
 };
@@ -47,7 +49,8 @@ struct tree_rb_s
 {
     struct node_rb_s *root;
 
-    int size;
+    unsigned int size;
+    unsigned int type;
 };
 
 

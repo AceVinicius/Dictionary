@@ -3,16 +3,23 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include <ncurses.h>
 
 #include "../lib/headers/define.h"
+
+#ifdef NCURSES
+# include <ncurses.h>
+#else
+# include <stdio.h>
+#endif
+
 #include "../lib/headers/constants.h"
 #include "../lib/headers/tree.h"
-// #include "../lib/headers/print.h"
+#include "../lib/headers/print.h"
 #include "../lib/headers/main.h"
 
 
 
+#ifdef NCURSES
 /******************************************************************************
  ****                         SCREEN OUTPUT LAYOUT                         ****
  ******************************************************************************/
@@ -210,7 +217,7 @@ exit_screen( void )
         sleep( 1 );
     }
 }
-
+#endif
 
 
 /******************************************************************************
@@ -233,7 +240,14 @@ parse( char *string )
 void
 search( tree_rb_t *tree )
 {
-    char *key = tree_operations_screen( k_menu[ SEARCH ], strlen( k_menu[ SEARCH ] ) );
+    char key[ MAX_WORD ];
+
+#ifdef NCURSES
+    key = tree_operations_screen(k_menu[ SEARCH ], strlen( k_menu[ SEARCH ]));
+#else
+    scanf( " %s", key );
+#endif
+
     parse( key );
 }
 
@@ -242,8 +256,17 @@ search( tree_rb_t *tree )
 void
 insert( tree_rb_t *tree )
 {
-    char *key = tree_operations_screen( k_menu[ INSERT ], strlen( k_menu[ INSERT ] ) );
+    char key[ MAX_WORD ];
+
+#ifdef NCURSES
+    key = tree_operations_screen(k_menu[ INSERT ], strlen(k_menu[ INSERT ]));
+#else
+    scanf( " %s", key );
+#endif
     parse( key );
+
+    insert_rb( tree, key );
+    Tree_Print( tree );
 
 #ifdef MAKE_BACKUP
 
@@ -256,7 +279,14 @@ insert( tree_rb_t *tree )
 void
 delete( tree_rb_t *tree )
 {
-    char *key = tree_operations_screen( k_menu[ DELETE ], strlen( k_menu[ DELETE ] ) );
+    char key[ MAX_WORD ];
+
+#ifdef NCURSES
+    key = tree_operations_screen(k_menu[ DELETE ], strlen( k_menu[ DELETE ]));
+#else
+    scanf( " %s", key );
+#endif
+
     parse( key );
 
 #ifdef MAKE_BACKUP
@@ -270,9 +300,21 @@ delete( tree_rb_t *tree )
 void
 print_node( tree_rb_t *tree )
 {
-    char *key = print_node_screen( k_menu[ PRINT_NODE ], strlen( k_menu[ PRINT_NODE ] ) );
+    char key[ MAX_WORD ];
+
+#ifdef NCURSES
+    key = print_node_screen(k_menu[ PRINT_NODE ], strlen(k_menu[ PRINT_NODE ]));
+#else
+    scanf( " %s", key );
+#endif
+
     parse( key );
+
+#ifdef NCURSES
     // node_screen( )
+#else
+
+#endif
 }
 
 
@@ -280,7 +322,11 @@ print_node( tree_rb_t *tree )
 void
 print_tree( tree_rb_t *tree )
 {
+#ifdef NCURSES
     // tree_screen( k_menu[ PRINT_TREE ], strlen( k_menu[ PRINT_TREE ] ) );
+#else
+
+#endif
 }
 
 
@@ -289,7 +335,12 @@ void
 exit_loop( bool *status )
 {
     *status = STOP;
+
+#ifdef NCURSES
     exit_screen( );
+#else
+
+#endif
 }
 
 
@@ -299,7 +350,7 @@ exit_loop( bool *status )
  ******************************************************************************/
 
 
-
+#ifdef NCURSES
 bool
 start_terminal( void )
 {
@@ -315,7 +366,7 @@ start_terminal( void )
     // raw();
     curs_set( 0 );
     start_color( );
-    init_pair( 1, COLOR_YELLOW, COLOR_MAGENTA );
+    init_pair( 1, COLOR_YELLOW, COLOR_YELLOW );
     init_pair( 2, COLOR_BLACK , COLOR_BLACK );
     init_pair( 3, 16          , 15 );
     init_pair( 4, COLOR_RED   , 15 );
@@ -324,7 +375,7 @@ start_terminal( void )
 
     return ALL_SET;
 }
-
+#endif
 
 
 void
@@ -350,22 +401,34 @@ initial_tree_setup( void )
 
 
 
+struct data {
+    char nome[ 100 ];
+};
+
+
+
 int
 main( void )
 {
+#ifdef NCURSES
     if (start_terminal( )) return EXIT_FAILURE;
+#endif
 
-
-    tree_rb_t *tree = initialize_tree( );
+    tree_rb_t *tree = initialize_tree_rb( sizeof(struct data) );
 
     bool status = RUNNING;
-
 
     // initial_setup_tree( tree );
 
     do
     {
-        int choice = menu_screen( );
+
+        int choice = 0;
+#ifdef NCURSES
+        choice = menu_screen( );
+#else
+        scanf( " %d", &choice );
+#endif
 
         switch (choice)
         {
@@ -382,7 +445,10 @@ main( void )
 
     // kill_tree( tree );
     free( tree );
+
+#ifdef NCURSES
     endwin();
+#endif
 
     return EXIT_SUCCESS;
 }

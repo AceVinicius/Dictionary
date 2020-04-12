@@ -1,7 +1,11 @@
-#include <ncurses.h>
-
 #include "../lib/headers/define.h"
 #include "../lib/headers/print.h"
+
+#ifdef NCURSES
+# include <ncurses.h>
+#else
+# include <stdio.h>
+#endif
 
 
 
@@ -17,13 +21,13 @@ print_trunks( struct trunk *p )
 
 
 void
-print_tree (node_rb_t *tree, struct trunk *prev, int is_left)
+print_treee (node_rb_t *tree, struct trunk *prev, int is_left)
 {
     if (tree == NULL) return;
 
     struct trunk this_disp = { prev, "     " };
     char *prev_str = this_disp.str;
-    print_tree (tree->right, &this_disp, 1);
+    print_treee (tree->right, &this_disp, 1);
 
     if (!prev)
     {
@@ -41,7 +45,8 @@ print_tree (node_rb_t *tree, struct trunk *prev, int is_left)
     }
 
     print_trunks (&this_disp);
-    printf ("%04d (%+d)\n",tree->key, tree->color);
+
+    printf ("%c %s\n",tree->key, (tree->color_e == RED ? "red" : "black") );
 
     if (prev)
     {
@@ -49,7 +54,7 @@ print_tree (node_rb_t *tree, struct trunk *prev, int is_left)
     }
     this_disp.str = "    |";
 
-    print_tree (tree->left, &this_disp, 0);
+    print_treee (tree->left, &this_disp, 0);
     if (!prev)
     {
         puts ("");
@@ -58,9 +63,10 @@ print_tree (node_rb_t *tree, struct trunk *prev, int is_left)
 
 
 
-void Tree_Print (tree_rb_t *tree)
+void
+Tree_Print (tree_rb_t *tree)
 {
     puts("");
-    print_tree (tree->root, 0, 0);
+    print_treee (tree->root, 0, 0);
     fflush (stdout);
 }

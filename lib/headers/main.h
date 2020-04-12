@@ -29,22 +29,25 @@
 # define _MAIN_H_
 
 
-
-WINDOW *create_basic_layout( const int min_y, const int min_x );
+#ifdef NCURSES
+WINDOW *create_basic_layout( const int , const int );
 int menu_screen( void );
-char *tree_operations_screen( const char *string, const unsigned long long size );
-char *print_node_screen( const char *string, const unsigned long long size );
+char *tree_operations_screen( const char *, const unsigned long long );
+char *print_node_screen( const char *, const unsigned long long );
 // void node_screen( const char *string, const char size );
 // void tree_screen( const char *string, const char size );
 void exit_screen( void );
-void parse( char *string );
-void search( tree_rb_t *tree );
-void insert( tree_rb_t *tree );
-void delete( tree_rb_t *tree );
-void print_node( tree_rb_t *tree );
-void print_tree( tree_rb_t *tree );
-void exit_loop( bool *status );
+#endif
+void parse( char * );
+void search( tree_rb_t * );
+void insert( tree_rb_t * );
+void delete( tree_rb_t * );
+void print_node( tree_rb_t * );
+void print_tree( tree_rb_t * );
+void exit_loop( bool * );
+#ifdef NCURSES
 bool start_terminal( void );
+#endif
 // void initial_tree_setup( void );
 
 

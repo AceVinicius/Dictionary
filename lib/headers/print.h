@@ -32,7 +32,7 @@ struct trunk
  *  Functions
  */
 void print_trunks( struct trunk *p );
-void print_tree( node_rb_t *node, struct trunk *prev, int is_left );
+void print_treee( node_rb_t *node, struct trunk *prev, int is_left );
 void Tree_Print( tree_rb_t *tree );
 
 
