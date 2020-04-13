@@ -48,7 +48,7 @@ void exit_loop( bool * );
 #ifdef NCURSES
 bool start_terminal( void );
 #endif
-// void initial_tree_setup( void );
+void initial_tree_setup( TREE * );
 
 
 

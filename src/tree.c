@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "../lib/headers/define.h"
+#include "../lib/headers/linked_list.h"
 #include "../lib/headers/tree.h"
 
 #ifdef NCURSES
@@ -19,7 +20,7 @@
 
 
 tree_rb_t *
-initialize_tree_rb( const unsigned int type )
+initialize_tree_rb( void )
 {
     tree_rb_t *new_tree = (tree_rb_t *) malloc( sizeof(tree_rb_t *) );
 
@@ -30,22 +31,36 @@ initialize_tree_rb( const unsigned int type )
 
     new_tree->root = NULL;
     new_tree->size = 0;
-    new_tree->type = type;
 
     return new_tree;
 }
 
 
 
-void
-insert_rb(       tree_rb_t *tree ,
-           const char      *key  )
+bool
+search_rb( tree_rb_t *tree ,
+           char      *key  )
 {
-    tree->root = __insert_rb( tree->root ,
-                              tree->type ,
-                              key[ 0 ]   ,
-                              key        );
+    return ( __search_rb( tree->root, key[ 0 ] ) == NULL ? false : true );
+}
 
+
+
+void
+insert_rb( tree_rb_t *tree ,
+           char      *key  )
+{
+    node_rb_t *tmp = __search_rb( tree->root, key[ 0 ] );
+
+    if (tmp == NULL)
+    {
+        tree->root = __insert_rb( tree->root, key[ 0 ], key );
+        tree->size++;
+    }
+    else
+    {
+        push( tmp->list, key );
+    }
 }
 
 
@@ -54,8 +69,7 @@ insert_rb(       tree_rb_t *tree ,
 // remove_rb(       tree_rb_t *tree ,
 //            const char      *key  )
 // {
-    // tree->root = __insert_rb( tree->root ,
-    //                           tree->type ,
+    // tree->root = __remove_rb( tree->root ,
     //                           key[ 0 ]   ,
     //                           key        );
 // }
@@ -69,28 +83,26 @@ insert_rb(       tree_rb_t *tree ,
 
 
 node_rb_t *
-__create_new_node_rb( const          int        key    ,
-                                     node_rb_t *father ,
-                      const unsigned int        type   ,
-                      const          void      *data   )
+__create_new_node_rb( const char       key    ,
+                            node_rb_t *father ,
+                            char      *word   )
 {
     node_rb_t *new_node = (node_rb_t *) malloc( sizeof(node_rb_t) );
 
     if (new_node == NULL)
     {
-        // puts( "  error: Could not allocate new 'node_rb_t'" );
         return NULL;
     }
 
-    new_node->data = malloc( type );
+    new_node->list = createList( );
 
-    if (new_node->data == NULL)
+    if (new_node->list == NULL)
     {
         free( new_node );
         return NULL;
     }
 
-    memcpy( new_node->data, data, type );
+    push( new_node->list, word );
 
     new_node->key     = key;
     new_node->left    = NULL;
@@ -104,17 +116,32 @@ __create_new_node_rb( const          int        key    ,
 
 
 node_rb_t *
-__insert_rb(                node_rb_t *root ,
-             const unsigned int        type ,
-             const          char       key  ,
-             const          void      *data )
+__search_rb( node_rb_t *root ,
+             char       key  )
+{
+    while (root != NULL)
+    {
+        if      (root->key < key) root = root->left;
+        else if (root->key > key) root = root->right;
+        else return root;
+    }
+
+    return NULL;
+}
+
+
+
+node_rb_t *
+__insert_rb(       node_rb_t *root ,
+             const char       key  ,
+                   char      *word )
 {
     node_rb_t *new_node  = NULL;
     node_rb_t *last_node = NULL;
 
     if (root == NULL)
     {
-        new_node = __create_new_node_rb( key, last_node, type, data );
+        new_node = __create_new_node_rb( key, last_node, word );
         new_node->color_e = BLACK;
         return new_node;
     }
@@ -125,26 +152,14 @@ __insert_rb(                node_rb_t *root ,
     {
         last_node = current_node;
 
-        if (current_node->key < current_node->key)
-        {
-            current_node = current_node->left;
-        }
-        else
-        {
-            current_node = current_node->right;
-        }
+        if (key < current_node->key) current_node = current_node->left;
+        else                         current_node = current_node->right;
     }
 
-    new_node = __create_new_node_rb( key, last_node, type, data );
+    new_node = __create_new_node_rb( key, last_node, word );
 
-    if (new_node->key > last_node->key)
-    {
-        last_node->right = new_node;
-    }
-    else
-    {
-        last_node->left = new_node;
-    }
+    if (key < last_node->key) last_node->left  = new_node;
+    else                      last_node->right = new_node;
 
     return __insert_fix_up( root, new_node );
 }

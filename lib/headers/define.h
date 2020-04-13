@@ -33,14 +33,28 @@
 /*
  *  Structs
  */
+struct node_list_s
+{
+    struct node_list_s *next;
+
+    char *word;
+};
+
+struct list_s
+{
+    struct node_list_s *head;
+
+    unsigned int size;
+};
+
 struct node_rb_s
 {
 	struct node_rb_s *left;
 	struct node_rb_s *right;
     struct node_rb_s *parent;
 
-	void *data;
-	char  key;
+	struct list_s *list;
+	char key;
 
 	enum { RED, BLACK } color_e;
 };
@@ -50,7 +64,6 @@ struct tree_rb_s
     struct node_rb_s *root;
 
     unsigned int size;
-    unsigned int type;
 };
 
 
@@ -60,8 +73,10 @@ struct tree_rb_s
  */
 typedef struct node_rb_s node_rb_t;
 typedef struct tree_rb_s tree_rb_t;
-// typedef;
-// typedef;
+typedef struct tree_rb_s TREE;
+typedef struct node_list_s node_list_t;
+typedef struct list_s list_t;
+typedef struct list_s LIST;
 
 
 

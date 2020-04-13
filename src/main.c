@@ -217,6 +217,8 @@ exit_screen( void )
         sleep( 1 );
     }
 }
+#else
+
 #endif
 
 
@@ -249,6 +251,13 @@ search( tree_rb_t *tree )
 #endif
 
     parse( key );
+    search_rb( tree, key );
+
+#ifdef NCURSES
+    key;
+#else
+    printf( "%s\n", key );
+#endif
 }
 
 
@@ -325,7 +334,7 @@ print_tree( tree_rb_t *tree )
 #ifdef NCURSES
     // tree_screen( k_menu[ PRINT_TREE ], strlen( k_menu[ PRINT_TREE ] ) );
 #else
-
+    Tree_Print( tree );
 #endif
 }
 
@@ -379,7 +388,7 @@ start_terminal( void )
 
 
 void
-initial_tree_setup( void )
+initial_tree_setup( TREE *tree )
 {
     char word[ MAX_WORD ];
 
@@ -389,7 +398,7 @@ initial_tree_setup( void )
     {
         scanf( " %s", word );
         parse( word );
-        // insert_rb();
+        insert_rb( tree, word );
     }
 }
 
@@ -401,12 +410,6 @@ initial_tree_setup( void )
 
 
 
-struct data {
-    char nome[ 100 ];
-};
-
-
-
 int
 main( void )
 {
@@ -414,15 +417,14 @@ main( void )
     if (start_terminal( )) return EXIT_FAILURE;
 #endif
 
-    tree_rb_t *tree = initialize_tree_rb( sizeof(struct data) );
+    TREE *tree = initialize_tree_rb( );
 
     bool status = RUNNING;
 
-    // initial_setup_tree( tree );
+    // initial_tree_setup( tree );
 
     do
     {
-
         int choice = 0;
 #ifdef NCURSES
         choice = menu_screen( );

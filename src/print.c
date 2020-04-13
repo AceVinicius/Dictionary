@@ -1,5 +1,6 @@
 #include "../lib/headers/define.h"
 #include "../lib/headers/print.h"
+#include "../lib/headers/linked_list.h"
 
 #ifdef NCURSES
 # include <ncurses.h>
@@ -25,28 +26,30 @@ print_treee (node_rb_t *tree, struct trunk *prev, int is_left)
 {
     if (tree == NULL) return;
 
-    struct trunk this_disp = { prev, "     " };
+    struct trunk this_disp = { prev, "    " };
     char *prev_str = this_disp.str;
     print_treee (tree->right, &this_disp, 1);
 
     if (!prev)
     {
-        this_disp.str = " --";
+        this_disp.str = " -- ";
     }
     else if (is_left)
     {
-        this_disp.str = ".--";
+        this_disp.str = ".-- ";
         prev_str = "    |";
     }
     else
     {
-        this_disp.str = "`--";
+        this_disp.str = "`-- ";
         prev->str = prev_str;
     }
 
     print_trunks (&this_disp);
 
-    printf ("%c %s\n",tree->key, (tree->color_e == RED ? "red" : "black") );
+    printf ( "%s%c\033[0;0m",(tree->color_e == RED ? "\033[31;1m" : ""), tree->key );
+
+    printList( tree->list );
 
     if (prev)
     {
